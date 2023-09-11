@@ -16,6 +16,15 @@ urlpatterns = [
         ),
     ),
     path(
+        "webauthn/",
+        include(
+            [
+                path("add/", views.add_webauthn, name="mfa_add_webauthn"),
+                path("remove/", views.deactivate_totp, name="mfa_remove_webauthn"),
+            ]
+        ),
+    ),
+    path(
         "recovery-codes/",
         include(
             [

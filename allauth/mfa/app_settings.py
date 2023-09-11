@@ -39,6 +39,10 @@ class AppSettings(object):
         """
         return self._setting("TOTP_ISSUER", "")
 
+    @property
+    def WEBAUTHN_ALLOW_INSECURE_ORIGIN(self):
+        return self._setting("WEBAUTHN_ALLOW_INSECURE_ORIGIN", False)
+
 
 _app_settings = AppSettings("MFA_")
 

@@ -33,6 +33,27 @@
             {% endif %}
         {% endslot %}
     {% endelement %}
+
+    <section class="webauthn">
+        <h2>{% translate "Security Keys" %}</h2>
+        {% if authenticators.webauthn %}
+        <ul>
+            {% for auth in authenticators.webauthn %}
+            <li>
+                {{ auth }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>{% translate "No security keys have been added." %}</p>
+        {% endif %}
+            <ul class="actions">
+                <li>
+                    <a href="{% url 'mfa_add_webauthn' %}">{% translate "Add" %}</a>
+                </li>
+            </ul>
+    </section>
+
     {% element panel %}
         {% slot title %}
             {% translate "Recovery Codes" %}
@@ -46,6 +67,7 @@
                 <p>{% translate "No recovery codes set up." %}</p>
             {% endif %}
         {% endslot %}
+
         {% if authenticators.recovery_codes %}
             {% slot actions %}
                 {% url 'mfa_view_recovery_codes' as view_url %}

@@ -21,6 +21,7 @@ stdenv.mkDerivation {
         python310Packages.qrcode
         python310Packages.requests-oauthlib
         python310Packages.tox
+        python310Packages.fido2
         sphinx
         twine
     ];
