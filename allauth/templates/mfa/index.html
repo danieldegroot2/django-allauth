@@ -36,22 +36,21 @@
 
     <section class="webauthn">
         <h2>{% translate "Security Keys" %}</h2>
-        {% if authenticators.webauthn %}
-        <ul>
-            {% for auth in authenticators.webauthn %}
-            <li>
-                {{ auth }}
-            </li>
-            {% endfor %}
-        </ul>
+        {% if authenticators.webauthn|length %}
+            <p>
+                {% blocktranslate count count=authenticators.webauthn|length %}You have added {{ count }} security keys/devices.{% plural %}You have added {{ count }} security key/device.{% endblocktranslate %}
+            </p>
         {% else %}
-        <p>{% translate "No security keys have been added." %}</p>
+            <p>{% translate "No security keys or devices have been added." %}</p>
         {% endif %}
-            <ul class="actions">
-                <li>
-                    <a href="{% url 'mfa_add_webauthn' %}">{% translate "Add" %}</a>
-                </li>
-            </ul>
+        <ul class="actions">
+            <li>
+                <a href="{% url 'mfa_list_webauthn' %}">{% translate "Manage" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'mfa_add_webauthn' %}">{% translate "Add" %}</a>
+            </li>
+        </ul>
     </section>
 
     {% element panel %}
