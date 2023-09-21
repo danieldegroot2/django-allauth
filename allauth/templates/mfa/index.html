@@ -34,6 +34,7 @@
         {% endslot %}
     {% endelement %}
 
+    {% if WEBAUTHN_ENABLED %}
     <section class="webauthn">
         <h2>{% translate "Security Keys" %}</h2>
         {% if authenticators.webauthn|length %}
@@ -52,6 +53,7 @@
             </li>
         </ul>
     </section>
+    {% endif %}
 
     {% element panel %}
         {% slot title %}

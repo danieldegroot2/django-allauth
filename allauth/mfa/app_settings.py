@@ -43,6 +43,10 @@ class AppSettings(object):
     def WEBAUTHN_ALLOW_INSECURE_ORIGIN(self):
         return self._setting("WEBAUTHN_ALLOW_INSECURE_ORIGIN", False)
 
+    @property
+    def WEBAUTHN_ENABLED(self):
+        return self._setting("WEBAUTHN_ENABLED", True)
+
 
 _app_settings = AppSettings("MFA_")
 

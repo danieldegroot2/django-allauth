@@ -81,6 +81,7 @@ class AuthenticateView(TemplateView):
                 "form": self.auth_form,
                 "webauthn_form": self.webauthn_form,
                 "js_data": {"credentials": self.webauthn_form.authentication_data},
+                "WEBAUTHN_ENABLED": app_settings.WEBAUTHN_ENABLED,
             }
         )
         return ret
@@ -103,6 +104,7 @@ class IndexView(TemplateView):
             else:
                 authenticators[auth.type] = auth.wrap()
         ret["authenticators"] = authenticators
+        ret["WEBAUTHN_ENABLED"] = app_settings.WEBAUTHN_ENABLED
         return ret
 
 

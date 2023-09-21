@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from allauth.mfa import views
+from allauth.mfa import app_settings, views
 
 
 urlpatterns = [
@@ -12,20 +12,6 @@ urlpatterns = [
             [
                 path("activate/", views.activate_totp, name="mfa_activate_totp"),
                 path("deactivate/", views.deactivate_totp, name="mfa_deactivate_totp"),
-            ]
-        ),
-    ),
-    path(
-        "webauthn/",
-        include(
-            [
-                path("", views.list_webauthn, name="mfa_list_webauthn"),
-                path("add/", views.add_webauthn, name="mfa_add_webauthn"),
-                path(
-                    "<int:pk>/remove/",
-                    views.remove_webauthn,
-                    name="mfa_remove_webauthn",
-                ),
             ]
         ),
     ),
@@ -48,3 +34,21 @@ urlpatterns = [
         ),
     ),
 ]
+
+if app_settings.WEBAUTHN_ENABLED:
+    urlpatterns += [
+        path(
+            "webauthn/",
+            include(
+                [
+                    path("", views.list_webauthn, name="mfa_list_webauthn"),
+                    path("add/", views.add_webauthn, name="mfa_add_webauthn"),
+                    path(
+                        "<int:pk>/remove/",
+                        views.remove_webauthn,
+                        name="mfa_remove_webauthn",
+                    ),
+                ]
+            ),
+        ),
+    ]
