@@ -69,6 +69,7 @@ class AuthenticateView(TemplateView):
         return posted_form
 
     def form_valid(self, form):
+        form.save()
         return self.stage.exit()
 
     def form_invalid(self, form):

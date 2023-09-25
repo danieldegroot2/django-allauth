@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -21,6 +22,8 @@ class Authenticator(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=Type.choices)
     data = models.JSONField()
+    created_at = models.DateTimeField(default=timezone.now)
+    last_used_at = models.DateTimeField(null=True)
 
     class Meta:
         unique_together = (("user", "type"),)
@@ -35,3 +38,7 @@ class Authenticator(models.Model):
             self.Type.RECOVERY_CODES: RecoveryCodes,
             self.Type.WEBAUTHN: WebAuthn,
         }[self.type](self)
+
+    def record_usage(self):
+        self.last_used_at = timezone.now()
+        self.save(update_fields=["last_used_at"])
