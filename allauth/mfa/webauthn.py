@@ -36,16 +36,18 @@ class B64JSONEncoder(json.JSONEncoder):
 def b64_json_dumps(data):
     return json.dumps(data, cls=B64JSONEncoder)
 
+
 def build_user_payload(user):
     return {
         "id": user_pk_to_url_str(user).encode("utf8"),
-        "name": "name", # FIXME
+        "name": "name",  # FIXME
         "displayName": "Displayname",  # FIXME
     }
 
 
 def parse_user_handle(user_handle: str):
     return url_str_to_user_pk(base64.b64decode(user_handle).decode("utf8"))
+
 
 def parse_authentication_credential(credential):
     response = credential["response"]
@@ -57,9 +59,9 @@ def parse_authentication_credential(credential):
         "client_data": client_data,
     }
     user = None
-    user_handle = response.get('userHandle')
+    user_handle = response.get("userHandle")
     if user_handle is not None:
-        user_id = parse_user_handle(response['userHandle'])
+        user_id = parse_user_handle(response["userHandle"])
         user = get_user_model().objects.filter(pk=user_id).first()
         # FIXME: Properly handle this
         assert user is not None
@@ -200,14 +202,18 @@ class WebAuthn:
         self.instance = instance
 
     @classmethod
-    def add(cls, user, authenticator_data):
+    def add(cls, user, name, authenticator_data):
         instance = Authenticator(
             user=user,
             type=Authenticator.Type.WEBAUTHN,
-            data={"authenticator_data": authenticator_data},
+            data={"name": name, "authenticator_data": authenticator_data},
         )
         instance.save()
         return cls(instance)
+
+    @property
+    def name(self):
+        return self.instance.data["name"]
 
     @property
     def authenticator_data(self):
