@@ -10,6 +10,10 @@ class AuthenticatorManager(models.Manager):
         if not qs.exclude(type=Authenticator.Type.RECOVERY_CODES).exists():
             qs.delete()
 
+    def delete_and_cleanup(self, authenticator):
+        authenticator.delete()
+        self.delete_dangling_recovery_codes(authenticator.user)
+
 
 class Authenticator(models.Model):
     class Type(models.TextChoices):

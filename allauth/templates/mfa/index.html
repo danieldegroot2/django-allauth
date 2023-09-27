@@ -45,12 +45,15 @@
             <p>{% translate "No security keys or devices have been added." %}</p>
         {% endif %}
         <ul class="actions">
+                    {% if authenticators.webauthn %}
             <li>
                 <a href="{% url 'mfa_list_webauthn' %}">{% translate "Manage" %}</a>
             </li>
+            {% else %}
             <li>
                 <a href="{% url 'mfa_add_webauthn' %}">{% translate "Add" %}</a>
             </li>
+            {% endif %}
         </ul>
     </section>
     {% endif %}

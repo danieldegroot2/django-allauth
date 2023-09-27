@@ -101,8 +101,7 @@ class TOTP:
         return cls(instance)
 
     def deactivate(self):
-        self.instance.delete()
-        Authenticator.objects.delete_dangling_recovery_codes(self.instance.user)
+        Authenticator.objects.delete_and_cleanup(self.instance)
 
     def validate_code(self, code):
         secret = decrypt(self.instance.data["secret"])
