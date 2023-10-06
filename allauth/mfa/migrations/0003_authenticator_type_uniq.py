@@ -4,18 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('mfa', '0002_authenticator_timestamps'),
+        ("mfa", "0002_authenticator_timestamps"),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='authenticator',
+            name="authenticator",
             unique_together=set(),
         ),
         migrations.AddConstraint(
-            model_name='authenticator',
-            constraint=models.UniqueConstraint(condition=models.Q(('type__in', ('totp', 'recovery_codes'))), fields=('user', 'type'), name='unique_authenticator_type'),
+            model_name="authenticator",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("type__in", ("totp", "recovery_codes"))),
+                fields=("user", "type"),
+                name="unique_authenticator_type",
+            ),
         ),
     ]

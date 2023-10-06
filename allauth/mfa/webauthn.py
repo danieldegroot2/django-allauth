@@ -3,7 +3,7 @@ import json
 import os
 from typing import Mapping
 
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import get_user_model
 
 from fido2.server import Fido2Server
 from fido2.utils import websafe_decode, websafe_encode

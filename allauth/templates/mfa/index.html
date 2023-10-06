@@ -33,31 +33,35 @@
             {% endif %}
         {% endslot %}
     {% endelement %}
-
     {% if WEBAUTHN_ENABLED %}
-    <section class="webauthn">
-        <h2>{% translate "Security Keys" %}</h2>
-        {% if authenticators.webauthn|length %}
-            <p>
-                {% blocktranslate count count=authenticators.webauthn|length %}You have added {{ count }} security keys/devices.{% plural %}You have added {{ count }} security key/device.{% endblocktranslate %}
-            </p>
-        {% else %}
-            <p>{% translate "No security keys or devices have been added." %}</p>
-        {% endif %}
-        <ul class="actions">
-                    {% if authenticators.webauthn %}
-            <li>
-                <a href="{% url 'mfa_list_webauthn' %}">{% translate "Manage" %}</a>
-            </li>
-            {% else %}
-            <li>
-                <a href="{% url 'mfa_add_webauthn' %}">{% translate "Add" %}</a>
-            </li>
-            {% endif %}
-        </ul>
-    </section>
+        {% element panel %}
+            {% slot title %}
+                {% translate "Security Keys" %}
+            {% endslot %}
+            {% slot body %}
+                {% if authenticators.webauthn|length %}
+                    <p>
+                        {% blocktranslate count count=authenticators.webauthn|length %}You have added {{ count }} security keys/devices.{% plural %}You have added {{ count }} security key/device.{% endblocktranslate %}
+                    </p>
+                {% else %}
+                    <p>{% translate "No security keys or devices have been added." %}</p>
+                {% endif %}
+            {% endslot %}
+            {% slot actions %}
+                {% if authenticators.webauthn %}
+                    {% url 'mfa_list_webauthn' as webauthn_list_url %}
+                    {% element button href=webauthn_list_url %}
+                        {% translate "Manage" %}
+                    {% endelement %}
+                {% else %}
+                    {% url 'mfa_add_webauthn' as webauthn_add_url %}
+                    {% element button href=webauthn_add_url %}
+                        {% translate "Add" %}
+                    {% endelement %}
+                {% endif %}
+            {% endslot %}
+        {% endelement %}
     {% endif %}
-
     {% element panel %}
         {% slot title %}
             {% translate "Recovery Codes" %}
@@ -71,7 +75,6 @@
                 <p>{% translate "No recovery codes set up." %}</p>
             {% endif %}
         {% endslot %}
-
         {% if authenticators.recovery_codes %}
             {% slot actions %}
                 {% url 'mfa_view_recovery_codes' as view_url %}
